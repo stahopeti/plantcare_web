@@ -34,14 +34,19 @@ AppAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
+    
+    $buttonArray;
+    
+    if(Yii::$app->user->isGuest){
+    $buttonArray = [
+            ['label' => 'Dashboard', 'url' => ['/site/index']],
+            ['label' => 'Login', 'url' => ['/site/login']]
+        ]; 
+    } else {
+    $buttonArray = [
             ['label' => 'Dashboard', 'url' => ['/site/index']],
             ['label' => 'Potdata', 'url' => ['/site/potdata']],
-            Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
-            ) : (
+            
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post')
                 . Html::submitButton(
@@ -50,8 +55,11 @@ AppAsset::register($this);
                 )
                 . Html::endForm()
                 . '</li>'
-            )
-        ],
+        ];
+    }
+    echo Nav::widget([
+        'options' => ['class' => 'navbar-nav navbar-right'],
+        'items' => $buttonArray,
     ]);
     NavBar::end();
     ?>
