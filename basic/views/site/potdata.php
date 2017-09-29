@@ -8,6 +8,7 @@
    use app\models\PiPot;
    use app\models\PlantConfigs;
    use app\models\SensorData;
+   use yii\bootstrap\Button;
    use yii\grid\GridView;
    use yii\data\ActiveDataProvider;
    
@@ -41,7 +42,7 @@
         . ' Moisture: ' . $plantConfig->getReqMoist()
         )?>
 
+<?= Button::widget([ 'label' => 'Water plant!', ]); ?>
+
 <h2>Sensor data</h2>
-<?= GridView::widget([
-    'dataProvider' => $dataProvider,
-]); ?>
+<?= GridView::widget([ 'dataProvider' => $dataProvider, ]); ?>

@@ -8,4 +8,7 @@ use yii\helpers\Html;
         <h1>Welcome back <?= Yii::$app->user->identity->username ?></h1>
         <p class="lead">Dashboard coming soon...</p>
     </div>
+    <?php
+        /*Yii::$app->potcomponent->helloWorld();*/
+    ?>
 </div>

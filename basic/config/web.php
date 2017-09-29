@@ -37,6 +37,9 @@ $config = [
                 ],
             ],
         ],
+        'potcomponent' => [
+            'class' => 'app\components\PotComponent'
+        ],
         'db' => require(__DIR__ . '/db.php'),
         /*
         'urlManager' => [

@@ -12,8 +12,8 @@ $this->title = 'Dashboard';
 //echo \Yii::$app->view->render('_loggedInIndex');
 
 if(Yii::$app->user->isGuest){
-    echo \Yii::$app->view->render('_guestIndex');
+    echo \Yii::$app->view->render('index/_guestIndex');
 } else {
-    echo \Yii::$app->view->render('_loggedInIndex');  
+    echo \Yii::$app->view->render('index/_loggedInIndex');  
 }
 ?>
