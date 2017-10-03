@@ -1,0 +1,38 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 2017.10.01., 18:31:12
+    Author     : Stahorszki Péter
+*/
+
+#commands_table {
+    display:table;
+    width:100%;
+}
+
+.pot_command_td {
+    display: table-cell;
+    width: 50%;
+}
+
+.pot_command_form_field {
+    width: 50%;
+    display: table;
+}
+
+.pot_command_form_field > div {
+    padding-top: 15px;
+    display: table-cell;
+    width: 30%;
+    vertical-align: middle;
+}
+
+.pot_command_form_field > span {
+    padding-left: 3px;
+    display: table-cell;
+    width: 70%;
+    vertical-align: middle;
+}

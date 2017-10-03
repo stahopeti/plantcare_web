@@ -8,22 +8,19 @@
    use app\models\PiPot;
    use app\models\PlantConfigs;
    use app\models\SensorData;
-   use yii\bootstrap\Button;
+   use app\models\Command;
    use yii\grid\GridView;
    use yii\data\ActiveDataProvider;
+   use yii\bootstrap\Modal;
+   use yii\helpers\Url;
    
    $this->title = 'Pot data';
-  // $this->params['breadcrumbs'][] = $this->title;
    $usr = MyUser::findIdentity(Yii::$app->user->getId());
    $userPi = UserPi::findByUserIdentity($usr->getId());
    $pi = Pis::findIdentity($userPi->getPiId());
    $piPot = PiPot::findByPiId($pi->id);
    $pot = Pots::findIdentity($piPot->pot_id);
-   
    $plantConfig = PlantConfigs::findIdentity($pot->plant_config_id);
-   //$sensorData = ;
-   
-   //$query = SensorData::findAll(['pot_id'=>$pot->getId()]);
    
    $dataProvider = new ActiveDataProvider([
     'query' => SensorData::findByPotId($pot->getId()),
@@ -32,17 +29,24 @@
     ],
 ]);
 ?>
-
 <h3><?= Html::encode($this->title)?></h3>
-
-<h2>Plant config</h2>
+<span> <b>Plant config:</b> </span>
 <?= Html::encode($plantConfig->getPlantName() 
         . ' Temperature: ' . $plantConfig->getReqTemp()   
         . ' Light: ' . $plantConfig->getReqLight()
         . ' Moisture: ' . $plantConfig->getReqMoist()
         )?>
 
-<?= Button::widget([ 'label' => 'Water plant!', ]); ?>
-
 <h2>Sensor data</h2>
 <?= GridView::widget([ 'dataProvider' => $dataProvider, ]); ?>
+
+<?= Html::button('Create command', ['value'=>Url::to('index.php?r=command/create'), 'class' => 'btn btn-success', 'id' => 'modalButton', 'pot_id' => $pot->getId()]) ?>
+<?php 
+    Modal::begin([
+        'header' => '<h4>Command</h4>',
+        'id' => 'modal',
+        'size' => 'modal-lg',
+    ]);
+    echo "<div id='modalContent'></div>";
+    Modal::end();
+?>

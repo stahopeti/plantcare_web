@@ -113,3 +113,10 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+#potdata_main {
+    display:table;
+    width:100%;
+    background: black;
+}
+
