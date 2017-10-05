@@ -69,7 +69,30 @@ class SensorData extends \yii\db\ActiveRecord
         return $this->hasOne(Pots::className(), ['id' => 'pot_id']);
     }
     
-    public function findByPotId($pot_id){
+    public function getTimeStamp(){
+        return $this->timestamp;
+    }
+    
+    public function getLight(){
+        return $this->light;
+    }
+    
+    public function findByPotIdAll($pot_id){
         return self::findByCondition(['pot_id'=>$pot_id]);
+    }
+    
+    public function findByPotIdLastDay($pot_id){
+        return self::findByCondition(['pot_id'=>$pot_id])->where(
+		"cast(TIMESTAMP as date) = cast(NOW() as date)");
+    }
+    
+    public function findByPotIdLastWeek($pot_id){
+        return self::findByCondition(['pot_id'=>$pot_id])->where(
+		"cast(TIMESTAMP as date) = cast(NOW() as date)");
+    }
+    
+    public function findByPotIdLastMonth($pot_id){
+        return self::findByCondition(['pot_id'=>$pot_id])->where(
+		"cast(TIMESTAMP as date) = cast(NOW() as date)");
     }
 }
