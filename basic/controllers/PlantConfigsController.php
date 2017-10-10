@@ -67,11 +67,10 @@ class PlantConfigsController extends Controller
         $model = new PlantConfigs();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $plantConfig = PlantConfigs::findIdentity($model->id);
             $session = Yii::$app->session;
             $pot_id_from_session = $session->get('selected_pot_id');
             $selected_pot = Pots::findIdentity($pot_id_from_session);
-            $selected_pot->plantConfig = $plantConfig;
+            $selected_pot->plant_config_id=$model->id;
             $selected_pot->save();
             return Yii::$app->getResponse()->redirect('index.php?r=site%2Fpotdata');
             //return $this->redirect(['view', 'id' => $model->id]);

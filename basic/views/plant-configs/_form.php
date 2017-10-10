@@ -14,6 +14,7 @@ use app\models\PlantConfigs;
    $selected_pot = Pots::findIdentity($pot_id_from_session);
    $selected_plant_config = $selected_pot->plantConfig;
    $model = $selected_plant_config;
+   $model->isunique = 1;
 ?>
 
 <div class="plant-configs-form">
@@ -30,6 +31,8 @@ use app\models\PlantConfigs;
 
     <?= $form->field($model, 'req_light')->textInput() ?>
 
+    <div style="display: none;"><?= $form->field($model, 'isunique')->textInput() ?></div>
+    
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
