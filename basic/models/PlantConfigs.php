@@ -13,6 +13,7 @@ use Yii;
  * @property double $req_temp
  * @property double $req_moist
  * @property double $req_light
+ * @property int $isunique
  *
  * @property Pots[] $pots
  */
@@ -32,8 +33,9 @@ class PlantConfigs extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['plant_code', 'plant_name', 'req_temp', 'req_moist', 'req_light'], 'required'],
+            [['plant_code', 'plant_name', 'req_temp', 'req_moist', 'req_light', 'isunique'], 'required'],
             [['req_temp', 'req_moist', 'req_light'], 'number'],
+            [['isunique'], 'integer'],
             [['plant_code', 'plant_name'], 'string', 'max' => 255],
         ];
     }
@@ -50,6 +52,7 @@ class PlantConfigs extends \yii\db\ActiveRecord
             'req_temp' => 'Req Temp',
             'req_moist' => 'Req Moist',
             'req_light' => 'Req Light',
+            'isunique' => 'Isunique',
         ];
     }
 
@@ -60,7 +63,7 @@ class PlantConfigs extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Pots::className(), ['plant_config_id' => 'id']);
     }
-
+	
     public function getPlantName(){
         return $this->plant_name;
     }
@@ -80,4 +83,9 @@ class PlantConfigs extends \yii\db\ActiveRecord
     {
         return self::findOne($id);
     }
+    
+    public static function findNotUniquePlantConfigs(){
+        return self::find()->all();
+    }
+    
 }

@@ -13,6 +13,12 @@ and open the template in the editor.
     width:100%;
 }
 
+#create-update-pot-related-div {
+}
+
+#create-update-button {
+}
+
 .pot_command_td {
     display: table-cell;
     width: 50%;

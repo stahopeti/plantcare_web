@@ -6,12 +6,14 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\models\Command */
 /* @var $form yii\widgets\ActiveForm */
+   $session = Yii::$app->session;
+   $pot_id_from_session = $session->get('selected_pot_id');
 ?>
 
 <div class="command-form">
 
     <?php $form = ActiveForm::begin(); 
-        $model->pot_id = 1;
+        $model->pot_id = $pot_id_from_session;
         $model->deleted = 0;
     ?>
 

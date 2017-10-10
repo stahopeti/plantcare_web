@@ -78,21 +78,21 @@ class SensorData extends \yii\db\ActiveRecord
     }
     
     public function findByPotIdAll($pot_id){
-        return self::findByCondition(['pot_id'=>$pot_id]);
+        return self::findByCondition(['pot_id'=>$pot_id])->asArray();
     }
     
     public function findByPotIdLastDay($pot_id){
         return self::findByCondition(['pot_id'=>$pot_id])->where(
-		"cast(TIMESTAMP as date) = cast(NOW() as date)");
+		"cast(TIMESTAMP as date) = cast(NOW() as date)")->asArray();
     }
     
     public function findByPotIdLastWeek($pot_id){
         return self::findByCondition(['pot_id'=>$pot_id])->where(
-		"cast(TIMESTAMP as date) = cast(NOW() as date)");
+		"cast(TIMESTAMP as date) between date_sub(now(), INTERVAL 1 WEEK) and now()")->asArray();
     }
     
     public function findByPotIdLastMonth($pot_id){
         return self::findByCondition(['pot_id'=>$pot_id])->where(
-		"cast(TIMESTAMP as date) = cast(NOW() as date)");
+		"cast(TIMESTAMP as date) between date_sub(now(), INTERVAL 1 MONTH) and now()")->asArray();
     }
 }
