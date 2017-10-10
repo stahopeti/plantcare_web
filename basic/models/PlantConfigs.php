@@ -85,7 +85,7 @@ class PlantConfigs extends \yii\db\ActiveRecord
     }
     
     public static function findNotUniquePlantConfigs(){
-        return self::find()->all();
+        return self::findByCondition(['isunique'=>0])->all();
     }
     
 }

@@ -14,6 +14,8 @@
     foreach($plantConfigs as $pConf){
         $plantConfigsDropDown[$pConf->id] = $pConf->plant_name ;
     }
+    $currentPlantConfig = PlantConfigs::findIdentity($model->plant_config_id);
+    $plantConfigsDropDown[$currentPlantConfig->id] = $currentPlantConfig->plant_name . ' (modified)'
 ?>
 
 <div class="pots-form">
@@ -22,10 +24,7 @@
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'plant_config_id')->dropDownList(
-        $plantConfigsDropDown,
-        ['prompt' => 'Choose plant config']
-            ) ?>
+    <?= $form->field($model, 'plant_config_id')->dropDownList($plantConfigsDropDown) ?>
     
     <?= $form->field($model, 'sunrise')->textInput() ?>
 
