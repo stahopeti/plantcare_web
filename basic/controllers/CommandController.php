@@ -66,7 +66,10 @@ class CommandController extends Controller
         $model = new Command();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return Yii::$app->getResponse()->redirect('index.php?r=site%2Fpotdata');
+            $session = Yii::$app->session;
+            $potId = $session->get('selected_pot_id');
+            return $this->render('/site/potdata', ['potId' => $potId]);
+            //return Yii::$app->getResponse()->redirect('index.php?r=site%2Fpotdata');
             //return $this->render('../site/potdata');
         } else {
             return $this->renderAjax('create', [

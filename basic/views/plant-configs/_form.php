@@ -21,7 +21,7 @@ use app\models\PlantConfigs;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'plant_code')->textInput(['maxlength' => true]) ?>
+    <div style="display: none;"><?= $form->field($model, 'plant_code')->textInput(['maxlength' => true]) ?></div>
 
     <?= $form->field($model, 'plant_name')->textInput(['maxlength' => true]) ?>
 

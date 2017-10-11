@@ -86,7 +86,10 @@ class PotsController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return Yii::$app->getResponse()->redirect('index.php?r=site%2Fpotdata');
+            $session = Yii::$app->session;
+            $potId = $session->get('selected_pot_id');
+            return $this->render('/site/potdata', ['potId' => $potId]);
+            //return Yii::$app->getResponse()->redirect('index.php?r=site%2Fpotdata');
             //return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->renderAjax('update', [

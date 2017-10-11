@@ -12,25 +12,18 @@
    use yii\data\ActiveDataProvider;
    use yii\bootstrap\Modal;
    use yii\helpers\Url;
+   use yii\helpers\ArrayHelper;
    
-   $this->title = 'Pot data';
-   $usr = MyUser::findIdentity(Yii::$app->user->getId());
-   $userPi = UserPi::findByUserIdentity($usr->getId());
-   $pi = Pis::findIdentity($userPi->getPiId());
-   $piPot = PiPot::findByPiId($pi->id);
-   $pot = Pots::findIdentity($piPot->pot_id);
-   $plantConfig = PlantConfigs::findIdentity($pot->plant_config_id);
-   $potId = $pot->id;
-   $plantConfigId = $plantConfig->id;
-   
-   $session = Yii::$app->session;
-   if(!$session->isActive){
-       $session->open();
-   }
-   $session->set('selected_pot_id', $pot->getId());
+    $this->title = 'Pot data';
+    $usr = MyUser::findIdentity(Yii::$app->user->getId());
+    $session = Yii::$app->session;
+    $potId = $session->get('selected_pot_id');
+    $pot = Pots::findIdentity($potId);
+    $plantConfig = PlantConfigs::findIdentity($pot->plant_config_id);
+    $plantConfigId = $plantConfig->id;
    
    $dataProvider = new ActiveDataProvider([
-    'query' => SensorData::findByPotIdLastWeek($pot->getId()),
+    'query' => SensorData::findByPotIdAll($pot->getId()),
     'pagination' => [
         'pageSize' => 20,
     ],
@@ -56,16 +49,6 @@
 </div>
 
 <h2>Sensor data</h2>
-<?= GridView::widget([ 
-    'dataProvider' => $dataProvider, 
-    'columns' => [
-        'timestamp',
-        'temperature',
-        'light',
-        'moisture',
-    ],
-    ]); ?>
-
 
 <?php use sjaakp\gcharts\LineChart;
 
@@ -122,6 +105,16 @@
         ],
     ]);
 ?>
+
+<?= GridView::widget([ 
+    'dataProvider' => $dataProvider, 
+    'columns' => [
+        'timestamp',
+        'temperature',
+        'light',
+        'moisture',
+    ],
+    ]); ?>
 
 <?php 
     Modal::begin([

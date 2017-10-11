@@ -93,9 +93,28 @@ class Pots extends \yii\db\ActiveRecord
         return $this->id;
     }
     
+    public function getName()
+    {
+        return $this->name;
+    }
+    
     public static function findIdentity($id) 
     {
         return self::findOne($id);
+    }
+    
+    public static function findPotsByUserId($userId)
+    {
+        $userPi = UserPi::findByUserIdentity($userId);
+        $pi = Pis::findIdentity($userPi->getPiId());
+        $piPots = PiPot::findByPiId($pi->id);
+        $pots = array();
+        foreach($piPots as $pp)
+        {        
+            $pots[] = Pots::findIdentity($pp->getPotId());
+                    
+        }
+        return $pots;
     }
     
     public function setPlantConfig($plantConfig)

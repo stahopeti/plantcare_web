@@ -13,7 +13,7 @@ use Yii;
  * @property double $temperature
  * @property double $moisture
  * @property double $light
- * @property int $blinder_on
+ * @property int $lamp_on
  * @property int $watertank_empty
  * @property int $connection_down
  *
@@ -35,8 +35,8 @@ class SensorData extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['pot_id', 'timestamp', 'temperature', 'moisture', 'light', 'blinder_on', 'watertank_empty', 'connection_down'], 'required'],
-            [['pot_id', 'blinder_on', 'watertank_empty', 'connection_down'], 'integer'],
+            [['pot_id', 'timestamp', 'temperature', 'moisture', 'light', 'lamp_on', 'watertank_empty', 'connection_down'], 'required'],
+            [['pot_id', 'lamp_on', 'watertank_empty', 'connection_down'], 'integer'],
             [['timestamp'], 'safe'],
             [['temperature', 'moisture', 'light'], 'number'],
             [['pot_id'], 'exist', 'skipOnError' => true, 'targetClass' => Pots::className(), 'targetAttribute' => ['pot_id' => 'id']],
@@ -55,7 +55,7 @@ class SensorData extends \yii\db\ActiveRecord
             'temperature' => 'Temperature',
             'moisture' => 'Moisture',
             'light' => 'Light',
-            'blinder_on' => 'Blinder On',
+            'lamp_on' => 'Lamp On',
             'watertank_empty' => 'Watertank Empty',
             'connection_down' => 'Connection Down',
         ];
@@ -69,6 +69,7 @@ class SensorData extends \yii\db\ActiveRecord
         return $this->hasOne(Pots::className(), ['id' => 'pot_id']);
     }
     
+    
     public function getTimeStamp(){
         return $this->timestamp;
     }
@@ -77,22 +78,43 @@ class SensorData extends \yii\db\ActiveRecord
         return $this->light;
     }
     
+    public function getTemperature(){
+        return $this->temperature;
+    }
+    
+    public function getMoisture(){
+        return $this->moisture;
+    }
+    
+    public function getLightOn(){
+        return $this->lamp_on;
+    }
+    
+    public function getWatertankEmpty(){
+        return $this->watertank_empty;
+    }
+    
     public function findByPotIdAll($pot_id){
-        return self::findByCondition(['pot_id'=>$pot_id])->asArray();
+        return self::findByCondition(['pot_id'=>$pot_id]);
     }
     
     public function findByPotIdLastDay($pot_id){
-        return self::findByCondition(['pot_id'=>$pot_id])->where(
-		"cast(TIMESTAMP as date) = cast(NOW() as date)")->asArray();
+        return self::findByCondition(['pot_id'=>$pot_id])->andWhere(
+		"cast(TIMESTAMP as date) = cast(NOW() as date)");
     }
     
     public function findByPotIdLastWeek($pot_id){
-        return self::findByCondition(['pot_id'=>$pot_id])->where(
-		"cast(TIMESTAMP as date) between date_sub(now(), INTERVAL 1 WEEK) and now()")->asArray();
+        return self::findByCondition(['pot_id'=>$pot_id])->andWhere(
+		"cast(TIMESTAMP as date) between date_sub(now(), INTERVAL 1 WEEK) and now()");
     }
     
     public function findByPotIdLastMonth($pot_id){
-        return self::findByCondition(['pot_id'=>$pot_id])->where(
-		"cast(TIMESTAMP as date) between date_sub(now(), INTERVAL 1 MONTH) and now()")->asArray();
+        return self::findByCondition(['pot_id'=>$pot_id])->andWhere(
+		"cast(TIMESTAMP as date) between date_sub(now(), INTERVAL 1 MONTH) and now()");
+    }
+    
+    public function findByPotIdLastEntry($pot_id){
+        return self::findByCondition(['pot_id'=>$pot_id])->orderBy(['id' => SORT_DESC])->one();
+        
     }
 }

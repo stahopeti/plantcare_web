@@ -76,9 +76,9 @@ class PiPot extends \yii\db\ActiveRecord
     public function getPotId(){
         return $this->pot_id;
     }
-
+    
     public static function findByPiId($pi_id){
-        return self::findOne(['pi_id'=>$pi_id]);
+        return self::findByCondition(['pi_id'=>$pi_id])->all();
     }
     
     public static function findIdentity($id) {

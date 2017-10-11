@@ -123,6 +123,16 @@ class SiteController extends Controller
     
     public function actionPotdata()
     {
+        
+        $request = Yii::$app->request;
+        $potId = $request->get('potId');
+        
+        $session = Yii::$app->session;
+        if(!$session->isActive){
+            $session->open();
+        }
+        $session->set('selected_pot_id', $potId);
+        
         return $this->render('potdata');
     }
     
