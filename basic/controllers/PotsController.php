@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Pots;
+use app\models\Command;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -88,6 +89,13 @@ class PotsController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $session = Yii::$app->session;
             $potId = $session->get('selected_pot_id');
+            
+            $plant_config_command = new Command();
+            $plant_config_command->pot_id = $model->id;
+            $plant_config_command->task = 'C_CHNG';
+            $plant_config_command->parameter = $model->plant_config_id;
+            $plant_config_command->deleted = 0;
+            $plant_config_command->save(false);
             return $this->render('/site/potdata', ['potId' => $potId]);
             //return Yii::$app->getResponse()->redirect('index.php?r=site%2Fpotdata');
             //return $this->redirect(['view', 'id' => $model->id]);

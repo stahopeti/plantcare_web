@@ -45,8 +45,6 @@ AppAsset::register($this);
     } else {
     $buttonArray = [
             ['label' => 'Dashboard', 'url' => ['/site/index']],
-            ['label' => 'Potdata', 'url' => ['/site/potdata']],
-            
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post')
                 . Html::submitButton(

@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\PlantConfigs;
+use app\models\Command;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use app\models\Pots;
@@ -72,7 +73,13 @@ class PlantConfigsController extends Controller
             $selected_pot = Pots::findIdentity($pot_id_from_session);
             $selected_pot->plant_config_id=$model->id;
             $selected_pot->save();
-            $session = Yii::$app->session;
+            
+            $plant_config_command = new Command();
+            $plant_config_command->pot_id = $selected_pot->id;
+            $plant_config_command->task = 'C_CHNG';
+            $plant_config_command->parameter = $model->id;
+            $plant_config_command->deleted = 0;
+            $plant_config_command->save(false);
             $potId = $session->get('selected_pot_id');
             return $this->render('/site/potdata', ['potId' => $potId]);
             //return Yii::$app->getResponse()->redirect('index.php?r=site%2Fpotdata');
