@@ -9,6 +9,9 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\db\QueryBuilder;
+use yii\db\Query;
+use app\models\PiPot;
 
 /**
  * PotsController implements the CRUD actions for Pots model.
@@ -66,8 +69,33 @@ class PotsController extends Controller
     {
         $model = new Pots();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return Yii::$app->getResponse()->redirect('index.php?r=site%2Fpotdata');
+        if ($model->load(Yii::$app->request->post())) {
+            if(!is_null(Pots::findIdentity($model->id))){
+                        return $this->render('/site/customError', ['errorMessage' => "Failed to create pot! Pot already exist!"]);
+            } else {
+                if($model->save()){
+                    $session = Yii::$app->session;
+                    $piId = $session->get('pi_id');
+
+                    $piPot = new PiPot();
+                    $piPot->pi_id = $piId;
+                    $piPot->pot_id = $model->id;
+                    if($piPot->save()){
+                        $plant_config_command = new Command();
+                        $plant_config_command->pot_id = 1;
+                        $plant_config_command->task = 'P_ADDED';
+                        $plant_config_command->parameter = $model->id;
+                        $plant_config_command->deleted = 0;
+                        $plant_config_command->save(false);
+                        return Yii::$app->getResponse()->redirect('index.php');
+                    } else {
+                        return $this->render('/site/customError', ['errorMessage' => "Failed to create pot! Did you give valid parameters?"]);
+                    }
+                    //return $this->redirect(['index']);
+                } else {
+                        return $this->render('/site/customError', ['errorMessage' => "Failed to create pot! Database error! Did you give valid parameters?"]);
+                }
+            }
             //return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->renderAjax('create', [

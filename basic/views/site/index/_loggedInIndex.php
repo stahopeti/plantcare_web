@@ -1,12 +1,24 @@
 <?php
 /* @var $this yii\web\View */
 
+use yii\helpers\Url;
+   use app\models\MyUser;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
+   use yii\bootstrap\Modal;
 use yii\widgets\DetailView;
 use app\models\Pots;
 use app\models\SensorData;
 use app\models\DashboardPotData;
+use app\models\Pis;
+use app\models\UserPi;
+
+    $user = MyUser::findIdentity(Yii::$app->user->getId());
+    $usr_pi = UserPi::findByUserIdentity($user->id);
+    $pi = Pis::findIdentity($usr_pi->pi_id);
+    
+    $session = Yii::$app->session;
+    $potId = $session->set('pi_id', $pi->id);
 ?>
 
 <div class="site-index">
@@ -14,6 +26,9 @@ use app\models\DashboardPotData;
         <h1>Welcome back <?= Yii::$app->user->identity->username ?></h1>
         <p class="lead">Your pots:</p>
     </div>
+    <span class="create-update-button">
+        <?= Html::button('Add new pot', ['value'=>Url::to('index.php?r=pots/create'), 'class' => 'btn btn-success', 'id' => 'modalButtonPots']) ?>
+    </span>
     <?php
     $pots = Pots::findPotsByUserId(1);
     
@@ -70,3 +85,13 @@ use app\models\DashboardPotData;
     ?>
 
 </div>
+
+<?php 
+    Modal::begin([
+        'header' => '<h4>Pot</h4>',
+        'id' => 'modalPots',
+        'size' => 'modal-lg',
+    ]);
+    echo "<div id='modalContentPots'></div>";
+    Modal::end();
+?>

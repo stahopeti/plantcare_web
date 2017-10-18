@@ -136,4 +136,17 @@ class SiteController extends Controller
         return $this->render('potdata');
     }
     
+    public function actionCustomError()
+    {
+        $request = Yii::$app->request;
+        $errorMessage = $request->get('errorMessage');  
+        
+        $session = Yii::$app->session;
+        if(!$session->isActive){
+            $session->open();
+        }
+        $session->set('errorMessage', $errorMessage);
+        return $this->render('customError');
+    }
+    
 }

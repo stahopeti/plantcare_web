@@ -23,6 +23,15 @@ class DashboardPotData {
     function __construct($potId) {
         $this->pot = Pots::findIdentity($potId);
         $this->lastSensorData = SensorData::findByPotIdLastEntry($this->pot->getId());
+        if($this->lastSensorData === null){
+            $this->lastSensorData = new SensorData();
+            $this->lastSensorData->timestamp = 'N\A';
+            $this->lastSensorData->light = 'N\A';
+            $this->lastSensorData->moisture= 'N\A';
+            $this->lastSensorData->temperature = 'N\A';
+            $this->lastSensorData->lamp_on = 'N\A';
+            $this->lastSensorData->watertank_empty = 'N\A';
+        }
     }
 
     function getPotId() {

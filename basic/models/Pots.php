@@ -34,8 +34,8 @@ class Pots extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'plant_config_id', 'sunrise', 'sunset'], 'required'],
-            [['plant_config_id'], 'integer'],
+            [['id', 'name', 'plant_config_id', 'sunrise', 'sunset'], 'required'],
+            [['id', 'plant_config_id'], 'integer'],
             [['sunrise', 'sunset'], 'safe'],
             [['name'], 'string', 'max' => 255],
             [['plant_config_id'], 'exist', 'skipOnError' => true, 'targetClass' => PlantConfigs::className(), 'targetAttribute' => ['plant_config_id' => 'id']],
@@ -55,6 +55,7 @@ class Pots extends \yii\db\ActiveRecord
             'sunset' => 'Sunset',
         ];
     }
+
 
     /**
      * @return \yii\db\ActiveQuery
@@ -96,6 +97,21 @@ class Pots extends \yii\db\ActiveRecord
     public function getName()
     {
         return $this->name;
+    }
+    
+    public function getPlantConfigId()
+    {
+        return $this->plant_config_id;
+    }
+    
+    public function getSunrise()
+    {
+        return $this->sunrise;
+    }
+    
+    public function getSunset()
+    {
+        return $this->sunset;
     }
     
     public static function findIdentity($id) 

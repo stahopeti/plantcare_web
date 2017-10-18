@@ -14,13 +14,13 @@
     foreach($plantConfigs as $pConf){
         $plantConfigsDropDown[$pConf->id] = $pConf->plant_name ;
     }
-    $currentPlantConfig = PlantConfigs::findIdentity($model->plant_config_id);
-    $plantConfigsDropDown[$currentPlantConfig->id] = $currentPlantConfig->plant_name . ' (modified)'
 ?>
 
 <div class="pots-form">
 
     <?php $form = ActiveForm::begin(); ?>
+
+    <?= $form->field($model, 'id')->textInput(['maxlength' => true]) ?>
     
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
